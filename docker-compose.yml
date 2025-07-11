@@ -1,7 +1,9 @@
 services:
   # Main application service
   app:
-    build: .
+    image: hpcie-harbornode.pune.cdac.in/bigleap/bigleap-api:latest
+    build:
+      context: .
     ports:
       - "3000:3000"
     environment:
