@@ -154,6 +154,94 @@ bigleap/
   "email": "cvedant@cdac.in"
 }
 ```
+## Deployment
+
+### Docker and Harbor Registry
+
+Build and push the Docker image to Harbor registry:
+
+```bash
+# Build the Docker image
+docker build -t bigleap-api .
+
+# Tag the image for Harbor registry
+docker tag bigleap-api hpcie-harbornode.pune.cdac.in/bigleap/bigleap-api:latest
+
+# Login to Harbor registry
+docker login hpcie-harbornode.pune.cdac.in
+# Enter your username and password when prompted
+
+# Push the image to Harbor
+docker push hpcie-harbornode.pune.cdac.in/bigleap/bigleap-api:latest
+```
+## Kubernetes Deployment with Helm
+
+Deploy the application to Kubernetes using Helm:
+
+```bash
+# Create a Helm chart
+mkdir -p charts
+helm create charts/bigleap
+
+# Create a secret for Harbor registry
+kubectl create secret docker-registry harbor-registry-secret \
+  --docker-server=hpcie-harbornode.pune.cdac.in \
+  --docker-username=your-username \
+  --docker-password=your-password \
+  --docker-email=your-email@example.com \
+  --namespace=default
+
+# Create a namespace for your application
+kubectl create namespace bigleap
+
+# Deploy the application
+helm install bigleap ./charts/bigleap --namespace bigleap
+
+# Verify the deployment
+kubectl get pods -n bigleap
+kubectl get svc -n bigleap
+
+# Access your application
+kubectl port-forward svc/bigleap 3000:3000 -n bigleap
+
+# Update your application (when needed)
+helm upgrade bigleap ./charts/bigleap --namespace bigleap
+
+# Delete the deployment (when done)
+helm uninstall bigleap --namespace bigleap
+```
+## Helm Chart Configuration
+
+The Helm chart should be configured with the following values in charts/bigleap/values.yaml:
+
+```yaml
+# Default values for bigleap
+replicaCount: 1
+
+image:
+  repository: hpcie-harbornode.pune.cdac.in/bigleap/bigleap-api
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets:
+  - name: harbor-registry-secret
+
+service:
+  type: ClusterIP
+  port: 3000
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  NODE_ENV: production
+  PORT: 3000
+```
 
 ## Contributing
 
@@ -168,5 +256,3 @@ bigleap/
 This project is licensed under the ISC License.
 
 ---
-
-Developed as part of the BigLeap project.
