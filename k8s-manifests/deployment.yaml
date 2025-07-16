@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bigleap
-        image: vedantchimote/bigleap-api:latest  # Replace with your actual image
+        image: 10.208.209.242/bigleap/bigleap-api@sha256:cbbefcb136c126448146e67ad855fc8a3cf064be3a02cd59b60e030f6c156b89  # Replace with your actual image
         ports:
         - containerPort: 3000
         resources:
