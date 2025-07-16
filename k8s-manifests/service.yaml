@@ -7,7 +7,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 3006          # External port (what users will access)
+  - port: 3008        # External port (what users will access)
     targetPort: 3000    # Internal port (what your container exposes)
     protocol: TCP
     name: http
