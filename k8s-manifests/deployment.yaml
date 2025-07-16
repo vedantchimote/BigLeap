@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
       - name: bigleap
-        image: 10.208.209.242/bigleap/bigleap-api@sha256:cbbefcb136c126448146e67ad855fc8a3cf064be3a02cd59b60e030f6c156b89  # Replace with your actual image
+        image: hpcie-harbornode.pune.cdac.in/bigleap/bigleap-api
         ports:
-        - containerPort: 3000
+        - containerPort: 3000  # This is correct - the container listens on 3000
         resources:
           limits:
             cpu: "500m"
