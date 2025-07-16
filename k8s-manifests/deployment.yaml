@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bigleap
+  labels:
+    app: bigleap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bigleap
+  template:
+    metadata:
+      labels:
+        app: bigleap
+    spec:
+      containers:
+      - name: bigleap
+        image: vedantchimote/bigleap-api:latest  # Replace with your actual image
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
